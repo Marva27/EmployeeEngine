@@ -1,0 +1,263 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: srinimarva@gmail.com
+    name: Srinivasan Ramu
+  description: REST APIs to manage dealers
+  title: Employee Management System
+  version: 1.0.0
+servers:
+- url: https://localhost:8083
+paths:
+  /adminUser/signUp:
+    description: To signup a new admin user
+    post:
+      description: To signup a new admin user
+      operationId: Admin User SignUp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/adminUserSignUp'
+        description: Admin User SignUp Request
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/adminUserSignUp'
+          description: Successfully signedup an admin user
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Error in siging up an admin user
+      x-content-type: application/json
+      x-accepts: application/json
+    summary: Admin User SignUp
+  /adminUser/signIn:
+    description: To signin as an admin user
+    post:
+      description: To signin as an admin user
+      operationId: Admin User SignIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/adminUserSignIn'
+        description: Admin User SignIn Request
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/token'
+          description: Admin user signed in successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Error in signin
+      x-content-type: application/json
+      x-accepts: application/json
+    summary: Admin User SignIn
+  /employee/add:
+    description: To add a new employee
+    post:
+      description: To add a new employee
+      operationId: Add New Employee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employee'
+        description: Structure of an Employee
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+          description: Employee added successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Error in adding employee
+      x-content-type: application/json
+      x-accepts: application/json
+    summary: Add New Employee
+  /employee/{employeeId}:
+    delete:
+      description: To delete an existing employee
+      operationId: Delete Existing Employee
+      parameters:
+      - explode: false
+        in: path
+        name: employeeId
+        required: true
+        schema:
+          example: 100
+          type: number
+        style: simple
+      responses:
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Employee not found
+      x-accepts: application/json
+    get:
+      description: To get an existing employee
+      operationId: Get Existing Employee
+      parameters:
+      - explode: false
+        in: path
+        name: employeeId
+        required: true
+        schema:
+          example: 100
+          type: number
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+          description: Employee retrieved successfully
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Employee not found
+      x-accepts: application/json
+    put:
+      description: To update an exisitng employee
+      operationId: Update Existing Employee
+      parameters:
+      - explode: false
+        in: path
+        name: employeeId
+        required: true
+        schema:
+          example: 100
+          type: number
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employee'
+        description: Structure of an Employee
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+          description: Employee updated successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Error in updating employee
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Employee not found
+      x-content-type: application/json
+      x-accepts: application/json
+components:
+  schemas:
+    adminUserSignUp:
+      description: Structure of an admin user signup
+      example:
+        firstName: firstName
+        lastName: lastName
+        emailAddress: emailAddress
+        password: password
+        userName: userName
+      properties:
+        firstName:
+          description: First name of the admin user
+          type: string
+        lastName:
+          description: Last name of the admin user
+          type: string
+        emailAddress:
+          description: Email address of the admin user
+          type: string
+        userName:
+          description: Username of the admin user
+          type: string
+        password:
+          description: Password of the admin user
+          type: string
+      type: object
+    adminUserSignIn:
+      description: Structure of an admin user signin
+      properties:
+        userName:
+          description: Username of the admin user
+          type: string
+        password:
+          description: Password of the admin user
+          type: string
+      type: object
+    employee:
+      description: Structure of an employee
+      example:
+        firstName: firstName
+        lastName: lastName
+        emailAddress: emailAddress
+        employeeId: 0.8008281904610115
+        designation: designation
+      properties:
+        employeeId:
+          description: Unique id of an employee
+          type: number
+        firstName:
+          description: First name of an employee
+          type: string
+        lastName:
+          description: Last name of an employee
+          type: string
+        emailAddress:
+          description: Email address of an employee
+          type: string
+        designation:
+          description: Designation of an employee
+          type: string
+      type: object
+    error:
+      description: Structure of an error
+      properties:
+        id:
+          description: Unique id representing a type of error
+          type: string
+        message:
+          description: Meaningful message about what went wrong
+          type: string
+      type: object
+    token:
+      description: Structure of a JWT
+      example:
+        jwt: jwt
+        userName: userName
+      properties:
+        userName:
+          description: Username of the admin user
+          type: string
+        jwt:
+          description: JWT Code
+          type: string
+      type: object
